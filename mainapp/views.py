@@ -66,5 +66,9 @@ def sort(request):
     filtered = Product.objects.filter(brand_id=sort_id)
     return goods(request, {'goods':filtered, 'brands':Brand.objects.all()})
 
+
+def compare(request):
+  pass
+  
 def payment(request):
     pass
