@@ -68,7 +68,7 @@ def sort(request):
 
 
 def compare(request):
-  pass
+  print('hello world')
   
 def payment(request):
     pass
