@@ -1,0 +1,1 @@
+[{"model": "mainapp.brand", "pk": 1, "fields": {"name": "Nike", "description": "Одни из немногих (1) нормальных кроссов"}}, {"model": "mainapp.brand", "pk": 2, "fields": {"name": "Adidas", "description": ""}}]

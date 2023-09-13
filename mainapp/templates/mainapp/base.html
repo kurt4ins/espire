@@ -1,0 +1,70 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Espire Shop</title>
+    {% block css %} {% endblock %}    <link rel="stylesheet" href="{% static 'vendor/css/goods.css' %}">
+    <script src="https://kit.fontawesome.com/22cc80c21b.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+    <header>
+        <div class="mainpage">
+            <a href="/">
+                <img class="logo" src="{% static 'vendor/img/logo-purple.png' %}">
+            </a>
+        </div>
+        <form action="search" class="search">
+            <input type="text" class="search-box" placeholder="Искать здесь..." name="search_text">
+            <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+        </form>
+        <div  onclick="show_cart()" class="cart">
+            <i class="fas fa-shopping-cart fa-lg"></i>
+        </div>
+        <div onclick="open_popup()" class="user">
+            <span ><i id="popup_but"class="fas fa-user fa-lg"></i></span>
+            <dialog id="popup">
+                <div class="login-popup">
+                    <img class="login-logo" src="{% static 'vendor/img/logo-purple.png'%}">
+                    <form action="{% url 'goods' %}" method="POST">
+                        <div class="popup-content">
+                            {% csrf_token %}
+                            <label for="id_username">Имя пользователя</label>
+                            {{form.username}}
+                            <label for="id_password">Пароль</label>
+                            {{form.password}}
+                        </div>
+                            <input type="submit" class="submit-lf">
+                    </form>
+                    <a href="{%url 'userapp:registration'%}">
+                        <p>Регистрация</p>
+                    </a>
+                </div>
+            </dialog>
+        </div>
+    </header>
+    {% block content %} {% endblock %}
+    {% include 'mainapp/cart.html' %}
+    <script src="{% static 'vendor/js/script.js' %}"></script>
+</body>
+<script type="text/javascript">
+    $('#cart-menu').on('click', '.remove-product', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type:'GET', 
+            url:'/user/remove-from-cart/'+ e.currentTarget.id,
+            success:function (data) {
+                if (data['new_quantity'] > 0) {
+                    $(`#p-${e.currentTarget.id}`).html(data['new_quantity'])
+                }
+                else {
+                    $(`#cart-position-${e.currentTarget.id}`).remove()
+                }
+            }
+        })
+    })
+</script>
+</html>

@@ -1,0 +1,40 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Это лучший сайт на свете</title>
+    <link rel="stylesheet" href="{% static 'vendor/css/goods.css' %}">
+</head>
+<body>
+    <header>
+        {% comment %} <form action="search">
+            <!-- <label for="search_text">Найти</label> -->
+            <input type="text" class="search"placeholder="Найти" name="search_text">
+            <input type="submit" class="search-btn" value="&#128269;">
+        </form> {% endcomment %}
+        <a href="/">
+            <div class="mainpage">
+                <img class="logo" src="data:image/png;base64,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">
+            </div>
+        </a>
+        <form action="search" class="search">
+            <input type="text" class="search-box" placeholder="Искать здесь..." name="search_text">
+            <input type="submit" class="search-btn" value="&#128269;"></input>
+        </form>
+    </header>
+    <div class="mainwindow">
+        <div class="goods">
+            {% for i in goods %}
+                <a href="/good?id={{i.id}}">
+                    <div class="good">
+                        <img class="preview-img" src="{{i.img.url}}" alt="">
+                        <p class="good-name">{{i.name}}</p>
+                        <p class="good-price">{{i.cost}}</p>
+                    </div>
+                </a>
+            {%endfor%}
+        </div>
+    </div>
+</body>
+</html> 

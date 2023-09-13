@@ -1,0 +1,31 @@
+{% extends 'mainapp/base.html' %}
+{%load static%}
+
+{% block css %} 
+    <link rel="stylesheet" href="{% static 'vendor/css/goods.css' %}">
+{% endblock %}    
+{% block content %}
+    <div class="mainwindow">
+        <div class="mainmenu">
+            <div class="sort-brands">
+                <form action="">
+                </form>
+            </div>
+        </div>
+        <div class="goods">
+            {% for i in goods %}
+            <a href="/good?id={{i.id}}">
+                <div class="good">
+                    <img class="preview-img" src="{{i.img.url}}" alt="">
+                    <p class="good-name">{{i.name}}</p>
+                    <p class="good-price">{{i.beautiful_cost}}</p>
+                </div>
+            </a>
+            {%endfor%}
+        </div>
+    </div>
+{% endblock %}
+
+
+
+

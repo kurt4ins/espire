@@ -1,0 +1,20 @@
+{% extends 'mainapp/base.html' %}
+{%load static%}
+
+{% block css %} 
+    <link rel="stylesheet" href="{% static 'vendor/css/registration.css' %}">
+{% endblock %}    
+{% block content %}
+    <div class="registration">
+        <form action="{% url 'userapp:registration' %}" method="POST">
+            {% csrf_token %}
+            {{form.first_name}}
+            {{form.last_name}}
+            {{form.username}}
+            {{form.email}}
+            {{form.password1}}
+            {{form.password2}}
+            <input type="submit">
+    </div>
+</body>
+</html>

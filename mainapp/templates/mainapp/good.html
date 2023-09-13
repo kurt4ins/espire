@@ -1,0 +1,21 @@
+{% extends 'mainapp/base.html' %}
+{%load static%}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'vendor/css/good.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="product">
+        <img class="img" src="{{good.img.url}}" alt="">
+        <div class="product-info">
+            <p class="product-name">{{good.name}}</p>
+            <p class="product-brand">{{good.brand.name}}</p>
+            <p class="product-cost">{{good.beautiful_cost}}</p>
+            <a href="{% url 'userapp:add_to_cart' good.id %}">
+                <div class="buy-btn">
+                    <p>Купить</p>
+                </div>
+            </a>
+        </div>
+        </div>
+    </div>
+{% endblock %}
