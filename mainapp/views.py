@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
-from mainapp.models import Brand, Product
+from mainapp.models import Brand, Product, Cart
 from userapp.forms import UserLoginForm
 from userapp.models import User
 from django.contrib import auth
@@ -17,11 +17,8 @@ def goods(request, context=None):
     except KeyError:
         device_id = str(uuid.uuid4())
         request.session['device_id'] = device_id
-        
-    
-    
     print(request.session['device_id'])
-    
+    compare_carts(request.user,device_id)
     if request.method == 'GET':
         if not context:
             context = {'goods':Product.objects.all(),
@@ -38,8 +35,19 @@ def goods(request, context=None):
             user = auth.authenticate(username=username, password=password)
             if user:
                 auth.login(request, user)
+                compare_carts(user,device_id)
         return HttpResponseRedirect('/')
         
+def compare_carts(user,device_id):
+   
+    carts = Cart.objects.filter(device_id=device_id)
+    carts2 = Cart.objects.filter(user=user)
+    for cart in carts:
+        cart.user = user
+        cart.save()
+    print(carts)
+    print(carts2.values('product','user').distinct())
+    
 
 def good(request):
     try:
@@ -47,7 +55,6 @@ def good(request):
     except KeyError:
         device_id = str(uuid.uuid4())
         request.session['device_id'] = device_id
-    print(request.session['device_id'])
     
     good_id = request.GET.get('id')
     good_info = Product.objects.get(id=good_id)
@@ -65,10 +72,6 @@ def sort(request):
     sort_id=request.GET.get('id')
     filtered = Product.objects.filter(brand_id=sort_id)
     return goods(request, {'goods':filtered, 'brands':Brand.objects.all()})
-
-
-def compare(request):
-  print('hello world')
   
 def payment(request):
     pass
