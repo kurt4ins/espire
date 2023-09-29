@@ -79,7 +79,6 @@ header {
     justify-content: start;
     flex-wrap: wrap;
     margin-left: 150px;
-    background-color: rgb(255, 255, 255);
 }
 
 .good {
@@ -155,7 +154,7 @@ header {
     position: absolute;
     height: 100vh;
     width: 500px;
-    opacity: 0;
+    opacity: 1;
     transition: 0.4s;
     background-color :white;
     border-top-left-radius: 10px;

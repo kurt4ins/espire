@@ -3,7 +3,8 @@ from django.http import JsonResponse
 from userapp.forms import UserRegistrationForm, UserProfileForm
 from mainapp.models import Product, Cart
 import uuid
-from django.contrib.auth.models import AnonymousUser
+from mainapp.models import Brand, Product, Cart
+from userapp.forms import UserLoginForm
 from django.db.models import Q 
 # Create your views here.
 
@@ -41,7 +42,9 @@ def profile(request):
     return render(request, 'userapp/profile.html', context)
 
 def order(request):
-    return HttpResponse('1')
+    context = {'goods':Product.objects.all(), 'brands':Brand.objects.all(), 'form':UserLoginForm, 'carts':cart(request)}
+    
+    return render(request, 'userapp/order.html', context)
 
 def add_to_cart(request, product_id):
     try:
@@ -50,10 +53,12 @@ def add_to_cart(request, product_id):
         device_id = str(uuid.uuid4())
         request.session['device_id'] = device_id
     user = request.user
+    product = Product.objects.get(id=product_id)
     if user.id == None:
         user = None
-    product = Product.objects.get(id=product_id)
-    cart = Cart.objects.filter(product=product, user=user, device_id=device_id)
+        cart = Cart.objects.filter(product=product, user=user, device_id=device_id)
+    else:
+        cart = Cart.objects.filter(product=product, user=user)
     if cart.exists():
         cart = cart.first()
         cart.quantity += 1
@@ -87,5 +92,3 @@ def remove_from_cart(request,cart_id):
     else:
         cart.save()
     return JsonResponse({'new_quantity':cart_quantity})
-
-    

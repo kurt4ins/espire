@@ -28,3 +28,11 @@ class UserProfileForm(UserChangeForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email')
+
+class OrderForm(forms.Form):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class':'firstname-input', 'placeholder':'Имя'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'email-input', 'placeholder':'Email'}))
+    address = forms.CharField()
+    class Meta:
+        model = User
+        fields = ('first_name', 'email')

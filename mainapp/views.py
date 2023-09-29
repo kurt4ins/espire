@@ -18,7 +18,6 @@ def goods(request, context=None):
         device_id = str(uuid.uuid4())
         request.session['device_id'] = device_id
     print(request.session['device_id'])
-    compare_carts(request.user,device_id)
     if request.method == 'GET':
         if not context:
             context = {'goods':Product.objects.all(),
@@ -39,15 +38,21 @@ def goods(request, context=None):
         return HttpResponseRedirect('/')
         
 def compare_carts(user,device_id):
-   
     carts = Cart.objects.filter(device_id=device_id)
-    carts2 = Cart.objects.filter(user=user)
     for cart in carts:
         cart.user = user
         cart.save()
-    print(carts)
-    print(carts2.values('product','user').distinct())
-    
+    carts2 = Cart.objects.filter(user=user)
+    sorted_carts = carts2.order_by('product')
+    i = 1
+    last_product = sorted_carts[0].product
+    while i < len(sorted_carts):
+        if last_product == sorted_carts[i].product:
+            sorted_carts[i].delete()
+        else:
+            last_product = sorted_carts[i].product
+        i += 1
+        print(sorted_carts)
 
 def good(request):
     try:
