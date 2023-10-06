@@ -66,5 +66,16 @@
             }
         })
     })
+
+    $('#cart-menu').on('click', '.add-product', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type:'GET', 
+            url:'/user/add-to-cart-btn/'+ e.currentTarget.id,
+            success:function (data) {
+                $(`#p-${e.currentTarget.id}`).html(data['new_quantity'])
+            }
+        })
+    })
 </script>
 </html>

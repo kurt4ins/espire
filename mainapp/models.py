@@ -49,4 +49,17 @@ class Cart(models.Model):
         carts = Cart.objects.filter(user = self.user)
         return sum([cart.quantity() for cart in carts])
     
-   
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=50)
+    adress = models.CharField(max_length=400)
+    email = models.EmailField()
+    phone = models.CharField(max_length=12)
+    is_user = models.BooleanField(default=False)
+    is_paid = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
+
+class OrderedProduct(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()

@@ -32,7 +32,7 @@ class UserProfileForm(UserChangeForm):
 class OrderForm(forms.Form):
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class':'firstname-input', 'placeholder':'Имя'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'email-input', 'placeholder':'Email'}))
-    address = forms.CharField()
+    address = forms.CharField(widget=forms.TextInput(attrs={'class':'address-input', 'placeholder':'Адрес'}))
     class Meta:
         model = User
-        fields = ('first_name', 'email')
+        fields = ('first_name', 'email', 'address')

@@ -30,4 +30,3 @@ function close_cart() {
     cart_screen.classList.remove('active')
     document.body.style.overflowY = 'scroll';
 }
-

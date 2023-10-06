@@ -4,7 +4,7 @@ from userapp.forms import UserRegistrationForm, UserProfileForm
 from mainapp.models import Product, Cart
 import uuid
 from mainapp.models import Brand, Product, Cart
-from userapp.forms import UserLoginForm
+from userapp.forms import UserLoginForm, OrderForm
 from django.db.models import Q 
 # Create your views here.
 
@@ -42,7 +42,7 @@ def profile(request):
     return render(request, 'userapp/profile.html', context)
 
 def order(request):
-    context = {'goods':Product.objects.all(), 'brands':Brand.objects.all(), 'form':UserLoginForm, 'carts':cart(request)}
+    context = {'goods':Product.objects.all(), 'brands':Brand.objects.all(), 'form':UserLoginForm, 'order_form':OrderForm, 'carts':cart(request)}
     
     return render(request, 'userapp/order.html', context)
 
@@ -92,3 +92,9 @@ def remove_from_cart(request,cart_id):
     else:
         cart.save()
     return JsonResponse({'new_quantity':cart_quantity})
+
+def add_to_cart_btn(request, cart_id):
+    cart = Cart.objects.get(id=cart_id)
+    cart.quantity += 1
+    cart.save()
+    return JsonResponse({'new_quantity':cart.quantity})
