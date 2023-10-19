@@ -1,19 +1,27 @@
 <div class="cart-screen" id="cart-screen" onclick="close_cart()">
 </div>
 <div class="cart-menu" id="cart-menu">
+    <p class="cart-header">Ваш заказ</p>
+    <div class="cart-line"></div>
     {% for cart in carts %}
-    <div class="cart_position" id="cart-position-{{cart.id}}">
-        {{cart.product.name}}
-        {{cart.id}}
-        <div class="remove-product" id="{{cart.id}}">
-            <i class="fas fa-minus-circle"></i>
+    <div class="cart-position" id="cart-position-{{cart.id}}">
+        <img class="cart-img" src={{cart.product.img.url}}>
+        <div class="product-info">
+            {{cart.product.name}}
+            {{cart.id}}
+            <div class="add-remove-btns">
+                <div class="remove-product" id="{{cart.id}}">
+                    <i class="fas fa-minus-circle"></i>
+                </div>
+                <p class="product-quantity" id="p-{{cart.id}}">{{cart.quantity}}</p>
+                <div class="add-product" id="{{cart.id}}">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+            </div>
         </div>
-        <div class="add-product" id="{{cart.id}}">
-            <i class="fas fa-plus-circle"></i>
-        </div>
-        <p id="p-{{cart.id}}">{{cart.quantity}}</p>
     </div>
     {%endfor%}
-    <p>{{carts.0.total_sum}}</p>
+    <div class="cart-line"></div>
+    <p class="total-price">Итого: {{carts.0.total_sum}}</p>
     <a href={%url 'userapp:order'%}> оформить заказ </a>
 </div>

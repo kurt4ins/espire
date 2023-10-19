@@ -42,9 +42,15 @@ def profile(request):
     return render(request, 'userapp/profile.html', context)
 
 def order(request):
-    context = {'goods':Product.objects.all(), 'brands':Brand.objects.all(), 'form':UserLoginForm, 'order_form':OrderForm, 'carts':cart(request)}
-    
-    return render(request, 'userapp/order.html', context)
+    if request.method == 'POST':
+        order = OrderForm(request.POST)
+        if order.is_valid():
+            print(order.cleaned_data)
+            order.save() 
+    else:
+        context = {'goods':Product.objects.all(), 'brands':Brand.objects.all(), 'form':UserLoginForm, 'order_form':OrderForm, 'carts':cart(request)}
+        
+        return render(request, 'userapp/order.html', context)
 
 def add_to_cart(request, product_id):
     try:
@@ -98,3 +104,10 @@ def add_to_cart_btn(request, cart_id):
     cart.quantity += 1
     cart.save()
     return JsonResponse({'new_quantity':cart.quantity})
+
+def make_order(request):
+    order = OrderForm(request.POST)
+    if order.is_valid():
+        return HttpResponse('1')
+
+    

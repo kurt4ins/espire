@@ -37,7 +37,7 @@ class Cart(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     quantity = models.PositiveIntegerField(default=1)
     completed = models.BooleanField(default=False)
-
+    
     def sum(self):
         return self.quantity * self.product.cost
     
@@ -51,7 +51,7 @@ class Cart(models.Model):
     
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name='Фамилия имя')
     adress = models.CharField(max_length=400)
     email = models.EmailField()
     phone = models.CharField(max_length=12)

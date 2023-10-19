@@ -6,11 +6,23 @@
 {% endblock %}
 
 {% block content %}
-    {{order_form.as_div}}
-    <form>
-        {{order_form.name}}
-        {{order_form.phone}}
-        {{order_form.email}}
-        {{order_form.address}}
-    </form>
+    <div class="order-form">     
+        <form action="{%url 'userapp:order' %}" method="POST">
+            {% csrf_token %}
+            {{form.non_field_errors}}
+            {% for f in order_form %}
+            <div>
+                <label for="{f.id_for_label}">{{f.label}}</label>
+                {{f}}
+            </div>
+            <div>
+                {{f.errors}}
+            </div>
+            {% endfor %}
+            
+            <input type="submit" value='Подтвердить заказ'>
+        </form>
+    </div>
+    <div class="cart">
+    </div>
 {% endblock %}
