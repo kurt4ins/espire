@@ -1,9 +1,9 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from userapp.forms import UserRegistrationForm, UserProfileForm
-from mainapp.models import Product, Cart
+from userapp.models import User
 import uuid
-from mainapp.models import Brand, Product, Cart
+from mainapp.models import Brand, Product, Cart, Order, OrderedProduct
 from userapp.forms import UserLoginForm, OrderForm
 from django.db.models import Q 
 # Create your views here.
@@ -42,15 +42,32 @@ def profile(request):
     return render(request, 'userapp/profile.html', context)
 
 def order(request):
+    user = request.user
     if request.method == 'POST':
+        errors = True
         order = OrderForm(request.POST)
         if order.is_valid():
-            print(order.cleaned_data)
+            # print(order.cleaned_data)
             order.save() 
+            order_info = Order.objects.last()
+            if user.id:
+                cart_info = Cart.objects.filter(user = user, completed=0)
+            else:
+                cart_info = Cart.objects.filter(device_id=request.session['device_id'], completed=0)
+            for cart in cart_info:
+                ordered_product = OrderedProduct.objects.create(quantity=cart.quantity, order=order_info, product=cart.product)
+                ordered_product.save()
+                cart.delete()
     else:
-        context = {'goods':Product.objects.all(), 'brands':Brand.objects.all(), 'form':UserLoginForm, 'order_form':OrderForm, 'carts':cart(request)}
-        
-        return render(request, 'userapp/order.html', context)
+        if user.id == None:
+            data = {}
+        else:
+            user_data = User.objects.get(id=user.id)
+            data = {'email':user_data.email, 'name':f'{user_data.first_name} {user_data.last_name}'}
+        errors = False
+        order = OrderForm(data=data)
+    context = {'goods':Product.objects.all(), 'brands':Brand.objects.all(), 'form':UserLoginForm, 'order_form':order, 'carts':get_cart(request), 'errors':errors}
+    return render(request, 'userapp/order.html', context)
 
 def add_to_cart(request, product_id):
     try:
@@ -75,7 +92,7 @@ def add_to_cart(request, product_id):
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
-def cart(request):
+def get_cart(request):
     try:
         device_id = request.session['device_id']
     except KeyError:
@@ -84,9 +101,9 @@ def cart(request):
     user = request.user
     if user.id == None:
         user = None
-        carts = Cart.objects.filter(device_id=device_id)
+        carts = Cart.objects.filter(device_id=device_id, completed = False)
     else:
-        carts = Cart.objects.filter(Q(user=user) | Q(device_id=device_id))
+        carts = Cart.objects.filter(Q(user=user) | Q(device_id=device_id), completed = False)
     return carts
 
 def remove_from_cart(request,cart_id):

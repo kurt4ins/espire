@@ -1,7 +1,7 @@
 <div class="cart-screen" id="cart-screen" onclick="close_cart()">
 </div>
 <div class="cart-menu" id="cart-menu">
-    <p class="cart-header">Ваш заказ</p>
+    <div class="cart-header"> <p>Ваш заказ</p> </div>
     <div class="cart-line"></div>
     {% for cart in carts %}
     <div class="cart-position" id="cart-position-{{cart.id}}">

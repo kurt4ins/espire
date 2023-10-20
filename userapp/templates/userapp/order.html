@@ -9,14 +9,16 @@
     <div class="order-form">     
         <form action="{%url 'userapp:order' %}" method="POST">
             {% csrf_token %}
-            {{form.non_field_errors}}
+            {{order_form.non_field_errors}}
             {% for f in order_form %}
             <div>
                 <label for="{f.id_for_label}">{{f.label}}</label>
                 {{f}}
             </div>
-            <div>
-                {{f.errors}}
+            <div >
+                {% if errors %}
+                    {{f.errors}}
+                {% endif %}
             </div>
             {% endfor %}
             

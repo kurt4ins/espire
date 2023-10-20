@@ -3,7 +3,7 @@ from mainapp.models import Brand, Product, Cart
 from userapp.forms import UserLoginForm
 from userapp.models import User
 from django.contrib import auth
-from userapp.views import cart
+from userapp.views import get_cart
 import uuid
 # Create your views here.
 
@@ -23,8 +23,8 @@ def goods(request, context=None):
             context = {'goods':Product.objects.all(),
                        'brands':Brand.objects.all(),
                        'form':UserLoginForm, 
-                       'carts':cart(request), 
-                       'range':range(len(cart(request)))}
+                       'carts':get_cart(request), 
+                       'range':range(len(get_cart(request)))}
         return render(request,'mainapp/goods.html', context)
     else:
         form = UserLoginForm(data=request.POST)
@@ -66,7 +66,7 @@ def good(request):
     return render(request,'mainapp/good.html',{'good':good_info, 
                                                'brands':Brand.objects.all(), 
                                                'form':UserLoginForm, 
-                                               'carts':cart(request)})
+                                               'carts':get_cart(request)})
 
 def search(request):
     search_text = request.GET.get('search_text')
