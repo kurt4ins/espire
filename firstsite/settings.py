@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-5h_9^vg$e4au0rx#&8z&-3n@edz=s*u7i^&j(7=n*oin6q#a73
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['espire-shop.ru','127.0.0.1']
 
 
 # Application definition

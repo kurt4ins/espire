@@ -42,11 +42,11 @@ class Cart(models.Model):
         return self.quantity * self.product.cost
     
     def total_sum(self):
-        carts = Cart.objects.filter(user = self.user)
+        carts = Cart.objects.filter(user = self.user, completed=0)
         return sum([cart.sum() for cart in carts])
     
     def total_quantity(self):
-        carts = Cart.objects.filter(user = self.user)
+        carts = Cart.objects.filter(user = self.user, completed=0)
         return sum([cart.quantity() for cart in carts])
     
 class Order(models.Model):

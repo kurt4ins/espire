@@ -155,7 +155,7 @@ header {
     overflow-y: scroll;
     height: 100vh;
     width: 500px;
-    opacity: 1;
+    opacity: 0;
     transition: 0.5s;
     background-color :white;
     border-top-left-radius: 10px;
@@ -196,18 +196,24 @@ header {
 }
 
 .cart-header {
+    margin-top: 10px;
+    padding-top: 10px;
     margin-left: 10px;
     font-size:25px;
     font-weight: 600;
     display: block;
     position: sticky;
     top:0;
+    background-color: #ffffff;
+}
+
+.your-order {
+    margin: 0px;
 }
 
 .cart-line {
     margin-top: 10px;
-    margin-left: 13px;
-    width: 96%;
+    width: 480px;
     height: 2px;
     background-color: #dadada;
 }
@@ -253,4 +259,19 @@ header {
 
 .total-price {
     margin-left: 10px;
+    position: sticky;
+    bottom: 0;
+    display: block;
+    background-color: white;
+    height: 50px;
 }
+
+@media (max-width: 1005px ){
+    .good{
+        width: 600px;
+    }
+    .sort-brands{
+        display: none;
+    }
+}
+

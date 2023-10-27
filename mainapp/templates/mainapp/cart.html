@@ -1,13 +1,16 @@
 <div class="cart-screen" id="cart-screen" onclick="close_cart()">
 </div>
 <div class="cart-menu" id="cart-menu">
-    <div class="cart-header"> <p>Ваш заказ</p> </div>
-    <div class="cart-line"></div>
+    <div class="cart-header"> 
+        <p class="your-order">Ваш заказ</p>
+        <div class="cart-line"></div>
+    </div>
+    
     {% for cart in carts %}
     <div class="cart-position" id="cart-position-{{cart.id}}">
         <img class="cart-img" src={{cart.product.img.url}}>
         <div class="product-info">
-            {{cart.product.name}}
+            <a href="/good?id={{cart.product.id}}">{{cart.product.name}}</a>
             {{cart.id}}
             <div class="add-remove-btns">
                 <div class="remove-product" id="{{cart.id}}">
@@ -21,7 +24,9 @@
         </div>
     </div>
     {%endfor%}
-    <div class="cart-line"></div>
-    <p class="total-price">Итого: {{carts.0.total_sum}}</p>
+    <div class="total-price">
+        <div class="cart-line"></div>
+        <p class="">Итого: {{carts.0.total_sum}}</p>
+    </div>
     <a href={%url 'userapp:order'%}> оформить заказ </a>
 </div>
