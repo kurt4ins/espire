@@ -2,4 +2,20 @@
     box-sizing: border-box;
     font-family: Helvetica;
 }
+.list-suggest{
+    display: none;
+    position: absolute;
+    border: 1px black solid;
+    background-color: white;
+}
+.list-suggest li{
+    list-style-type: none;
+    cursor: pointer;
+}
+.list-suggest li:hover{
+    background-color: grey;
+}
+.active-suggest{
+    display: block;
+}
 

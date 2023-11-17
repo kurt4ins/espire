@@ -40,7 +40,7 @@ class OrderForm(forms.ModelForm):
         fields = ['name','adress','email','phone']
         widgets = {
             'name': forms.TextInput(attrs={'class':'order-input'}),
-            'adress': forms.TextInput(attrs={'class':'order-input'}),
+            'adress': forms.TextInput(attrs={'class':'order-input', 'id':'adress'}),
             'email': forms.EmailInput(attrs={'class':'order-input'}),
             'phone': forms.TextInput(attrs={'class':'order-input'}),
         }

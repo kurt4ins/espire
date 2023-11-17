@@ -12,8 +12,11 @@
             {{order_form.non_field_errors}}
             {% for f in order_form %}
             <div>
-                <label for="{f.id_for_label}">{{f.label}}</label>
+                <label for="{{f.id_for_label}}">{{f.label}}</label>
                 {{f}}
+                {% if f.id_for_label == "adress" %}
+                    <ul class="list-suggest" id="list-suggest"></ul>
+                {% endif %}
             </div>
             <div >
                 {% if errors %}
@@ -27,4 +30,32 @@
     </div>
     <div class="cart">
     </div>
+<script type="text/javascript">
+    $('#adress').bind('input', function(e) {
+        e.preventDefault()
+        let data = $('#adress').val()
+        $.ajax({
+            type:'GET',
+            url:"{%url 'userapp:suggest_address' %}?data=" + data,
+            success: function(data) {
+                // alert(data);
+                $('#list-suggest').empty()
+                for (let line in data.results){
+                    $('#list-suggest').append('<li class="list-elem">'+data.results[line]+'</li>')
+                }
+            },
+        })
+    })
+    $('#adress').on('focus', function(e){
+        $('#list-suggest').addClass('active-suggest')
+    })
+    $('#list-suggest').on('click', ".list-elem",function(e){
+        alert(e.currentTarget)
+        $('#adress').val('')
+    })
+    // $('#adress').on('focusout', function(e){
+    //     $('#list-suggest').removeClass('active-suggest')
+    // })
+</script>
+
 {% endblock %}

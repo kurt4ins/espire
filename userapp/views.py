@@ -5,7 +5,9 @@ from userapp.models import User
 import uuid
 from mainapp.models import Brand, Product, Cart, Order, OrderedProduct
 from userapp.forms import UserLoginForm, OrderForm
-from django.db.models import Q 
+from django.db.models import Q
+import requests
+from pprint import pprint
 # Create your views here.
 
 
@@ -127,4 +129,9 @@ def make_order(request):
     if order.is_valid():
         return HttpResponse('1')
 
-    
+def suggest_address(request):
+    data = request.GET.get('data')
+    ans = requests.get(f'https://suggest-maps.yandex.ru/v1/suggest?apikey=781f59c0-5f81-470b-a396-9c28b38e3fe8&text={data}&ll=37.37,55.55&types=street,house&print_address=1')
+    # pprint(ans.json())
+    res = {'results': [elem['address']['formatted_address']  for elem in ans.json()['results'] if elem['address']['component'][0]['name'] == 'Россия']}
+    return JsonResponse(res)

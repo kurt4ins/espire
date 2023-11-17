@@ -28,5 +28,7 @@
         <div class="cart-line"></div>
         <p class="">Итого: {{carts.0.total_sum}}</p>
     </div>
-    <a href={%url 'userapp:order'%}> оформить заказ </a>
+    <a href={%url 'userapp:order'%}>
+        <button class="order-btn" role="button">Оформить заказ</button>
+    </a>
 </div>
