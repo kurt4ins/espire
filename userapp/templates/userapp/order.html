@@ -2,60 +2,68 @@
 {%load static%}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'vendor/css/order.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/css/order.css' %}">
 {% endblock %}
 
 {% block content %}
-    <div class="order-form">     
+<div class="page">
+    <div class="order-form">
         <form action="{%url 'userapp:order' %}" method="POST">
             {% csrf_token %}
             {{order_form.non_field_errors}}
             {% for f in order_form %}
-            <div>
+            <div class="order-form-str" {% if f.id_for_label == "adress" %}id="address_div" {%endif%}>
                 <label for="{{f.id_for_label}}">{{f.label}}</label>
                 {{f}}
                 {% if f.id_for_label == "adress" %}
-                    <ul class="list-suggest" id="list-suggest"></ul>
+                <ul class="list-suggest" id="list-suggest"></ul>
                 {% endif %}
             </div>
-            <div >
+            <div>
                 {% if errors %}
-                    {{f.errors}}
+                {{f.errors}}
                 {% endif %}
             </div>
             {% endfor %}
-            
+
             <input type="submit" value='Подтвердить заказ'>
         </form>
     </div>
     <div class="cart">
     </div>
+</div>
 <script type="text/javascript">
-    $('#adress').bind('input', function(e) {
+    $('#adress').bind('input', function (e) {
         e.preventDefault()
         let data = $('#adress').val()
         $.ajax({
-            type:'GET',
-            url:"{%url 'userapp:suggest_address' %}?data=" + data,
-            success: function(data) {
+            type: 'GET',
+            url: "{%url 'userapp:suggest_address' %}?data=" + data,
+            success: function (data) {
                 // alert(data);
                 $('#list-suggest').empty()
-                for (let line in data.results){
-                    $('#list-suggest').append('<li class="list-elem">'+data.results[line]+'</li>')
+                for (let line in data.results) {
+                    $('#list-suggest').append('<li class="list-elem">' + data.results[line] + '</li>')
                 }
             },
         })
     })
-    $('#adress').on('focus', function(e){
+    $('#adress').on('focus', function (e) {
+        console.log(2)
         $('#list-suggest').addClass('active-suggest')
     })
-    $('#list-suggest').on('click', ".list-elem",function(e){
-        alert(e.currentTarget)
-        $('#adress').val('')
+    $('#list-suggest').on('click', ".list-elem", function (e) {
+        console.log(3)
+        console.log(e.currentTarget.innerHTML)
+        $('#adress').val(e.currentTarget.innerHTML)
+        $('#list-suggest').removeClass('active-suggest')
     })
-    // $('#adress').on('focusout', function(e){
-    //     $('#list-suggest').removeClass('active-suggest')
-    // })
+    $('#adress').on('focusout', function (e) {
+        setTimeout(function (e) {
+            console.log(1)
+            $('#list-suggest').removeClass('active-suggest')
+        }, 100)
+    })
 </script>
 
 {% endblock %}

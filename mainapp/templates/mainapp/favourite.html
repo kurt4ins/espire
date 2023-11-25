@@ -1,0 +1,34 @@
+<div class="favourite-screen" id="favourite-screen" onclick="close_cart()">
+</div>
+<div class="favourite-menu" id="favourite-menu">
+    <div class="cart-header"> 
+        <p class="your-order">Избранные товары</p>
+        <div class="cart-line"></div>
+    </div>
+    
+    {% for cart in carts %}
+    <div class="cart-position" id="cart-position-{{cart.id}}">
+        <img class="cart-img" src={{cart.product.img.url}}>
+        <div class="product-info">
+            <a href="/good?id={{cart.product.id}}">{{cart.product.name}}</a>
+            {{cart.id}}
+            <div class="add-remove-btns">
+                <div class="remove-product" id="{{cart.id}}">
+                    <i class="fas fa-minus-circle"></i>
+                </div>
+                <p class="product-quantity" id="p-{{cart.id}}">{{cart.quantity}}</p>
+                <div class="add-product" id="{{cart.id}}">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%endfor%}
+    <div class="total-price">
+        <div class="cart-line"></div>
+        <p class="">Итого: {{carts.0.total_sum}}</p>
+    </div>
+    <a href={%url 'userapp:order'%}>
+        <button class="order-btn" role="button">Оформить заказ</button>
+    </a>
+</div>

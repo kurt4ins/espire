@@ -5,12 +5,15 @@
 .list-suggest{
     display: none;
     position: absolute;
-    border: 1px black solid;
+    border: 1px rgb(255, 255, 255) solid;
     background-color: white;
+    left: 300px;
+    padding:0;
 }
 .list-suggest li{
     list-style-type: none;
     cursor: pointer;
+    padding: 5px 0;
 }
 .list-suggest li:hover{
     background-color: grey;
@@ -19,3 +22,23 @@
     display: block;
 }
 
+.order-form {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.order-input {
+    border: 1px solid #eee;
+    transition: .3s border-color;
+    font-size: 14px;
+    height: 25px;
+    width: 350px;
+}
+
+.order-input:hover {
+    border: 1px solid #aaa;
+}
+
+.order-form-str {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}

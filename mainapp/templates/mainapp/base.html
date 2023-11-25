@@ -22,6 +22,10 @@
             <input type="text" class="search-box" placeholder="Искать здесь..." name="search_text">
             <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
         </form>
+
+        <div onclick="show_favourite()" class="cart">
+            <i class="fa-solid fa-heart"></i>
+        </div>
         <div  onclick="show_cart()" class="cart">
             <i class="fas fa-shopping-cart fa-lg"></i>
         </div>
@@ -49,6 +53,7 @@
     </header>
     {% block content %} {% endblock %}
     {% include 'mainapp/cart.html' %}
+    {% include 'mainapp/favourite.html' %}
     <script src="{% static 'vendor/js/script.js' %}"></script>
 </body>
 <script type="text/javascript">

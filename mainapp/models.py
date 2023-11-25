@@ -49,6 +49,11 @@ class Cart(models.Model):
         carts = Cart.objects.filter(user = self.user, completed=0)
         return sum([cart.quantity() for cart in carts])
     
+class Favourite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    device_id = models.UUIDField(default=uuid.uuid4)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=50, verbose_name='Фамилия имя')
