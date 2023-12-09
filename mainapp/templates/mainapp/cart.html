@@ -5,7 +5,11 @@
         <p class="your-order">Ваш заказ</p>
         <div class="cart-line"></div>
     </div>
-    
+    {% if carts|length == 0 %}
+    <div class="empty-cart">
+        <p>Корзина пуста</p>
+    </div>
+    {% else %}
     {% for cart in carts %}
     <div class="cart-position" id="cart-position-{{cart.id}}">
         <img class="cart-img" src={{cart.product.img.url}}>
@@ -31,4 +35,5 @@
     <a href={%url 'userapp:order'%}>
         <button class="order-btn" role="button">Оформить заказ</button>
     </a>
+    {% endif %}
 </div>

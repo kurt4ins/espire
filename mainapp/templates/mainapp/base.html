@@ -34,6 +34,16 @@
             <dialog id="popup">
                 <div class="login-popup">
                     <img class="login-logo" src="{% static 'vendor/img/logo-purple.png'%}">
+                    {% if request.user.is_authenticated %}
+                    <div class="popup-btns">    
+                        <a href="{%url 'userapp:profile' %}"><img class="svg-icon" src="{% static 'vendor/svg/user-profile.svg' %}" alt="">Профиль</a>
+                        <a href="{%url 'userapp:order_history' %}"><img class="svg-icon" src="{% static 'vendor/svg/cart-1.svg' %}" alt="">Заказы</a>
+                        {% if request.user.is_staff %}
+                        <a href="{%url 'admin:index' %}"><img class="svg-icon" src="{% static 'vendor/svg/lightbulb.svg' %}" alt="">Admin pannel</a>
+                        {% endif %}
+                        <a href="{%url 'userapp:logout' %}"><img class="svg-icon" src="{% static 'vendor/svg/undo.svg' %}" alt="">Выйти</a>
+
+                    {% else %}
                     <form action="{% url 'goods' %}" method="POST">
                         <div class="popup-content">
                             {% csrf_token %}
@@ -47,6 +57,7 @@
                     <a href="{%url 'userapp:registration'%}">
                         <p>Регистрация</p>
                     </a>
+                    {% endif %}
                 </div>
             </dialog>
         </div>

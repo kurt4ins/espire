@@ -42,9 +42,9 @@ function show_favourite() {
 }
 
 function close_favourite() {
-    let cart_div = document.getElementById('cart-menu');
-    let cart_screen = document.getElementById('cart-screen');
-    cart_div.classList.remove('active')
-    cart_screen.classList.remove('active')
+    let favourite_div = document.getElementById('favourite-menu');
+    let favourite_screen = document.getElementById('favourite-screen');
+    favourite_div.classList.remove('active')
+    favourite_screen.classList.remove('active')
     document.body.style.overflowY = 'scroll';
 }

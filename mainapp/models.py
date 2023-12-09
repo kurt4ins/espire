@@ -53,6 +53,7 @@ class Favourite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     device_id = models.UUIDField(default=uuid.uuid4)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    #status = models.BooleanField(default=False)
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)

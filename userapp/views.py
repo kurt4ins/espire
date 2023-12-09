@@ -3,9 +3,11 @@ from django.http import JsonResponse
 from userapp.forms import UserRegistrationForm, UserProfileForm
 from userapp.models import User
 import uuid
-from mainapp.models import Brand, Product, Cart, Order, OrderedProduct
+from mainapp.models import Brand, Product, Cart, Order, OrderedProduct, Favourite
 from userapp.forms import UserLoginForm, OrderForm
 from django.db.models import Q
+from django.urls import reverse
+from django.contrib import auth
 import requests
 from pprint import pprint
 # Create your views here.
@@ -94,6 +96,27 @@ def add_to_cart(request, product_id):
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+def add_to_favourite(request, product_id):
+    try:
+        device_id = request.session['device_id']
+    except KeyError:
+        device_id = str(uuid.uuid4())
+        request.session['device_id'] = device_id
+    user = request.user
+    product = Product.objects.get(id=product_id)
+    if user.id == None:
+        user = None
+        favourite = Favourite.objects.filter(product=product, user=user, device_id=device_id)
+    else:
+        favourite = Favourite.objects.filter(product=product, user=user)
+    if favourite.exists():
+        favourite = favourite.first()
+        favourite.delete() 
+    else:
+        favourite = Favourite.objects.create(product=product, user=user, device_id=device_id)
+        favourite.save()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 def get_cart(request):
     try:
         device_id = request.session['device_id']
@@ -107,6 +130,20 @@ def get_cart(request):
     else:
         carts = Cart.objects.filter(Q(user=user) | Q(device_id=device_id), completed = False)
     return carts
+
+def get_favourite(request):
+    try:
+        device_id = request.session['device_id']
+    except KeyError:
+        device_id = str(uuid.uuid4())
+        request.session['device_id'] = device_id
+    user = request.user
+    if user.id == None:
+        user = None
+        favourites = Favourite.objects.filter(device_id=device_id)
+    else:
+        favourites = Favourite.objects.filter(Q(user=user) | Q(device_id=device_id))
+    return favourites
 
 def remove_from_cart(request,cart_id):
     cart = Cart.objects.get(id=cart_id)
@@ -135,3 +172,11 @@ def suggest_address(request):
     # pprint(ans.json())
     res = {'results': [elem['address']['formatted_address']  for elem in ans.json()['results'] if elem['address']['component'][0]['name'] == 'Россия']}
     return JsonResponse(res)
+
+def order_history(request):
+    return HttpResponse('История заказов')
+
+def logout(request):
+    # return HttpResponse(1)
+    auth.logout(request)
+    return HttpResponseRedirect(reverse('goods'))

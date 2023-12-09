@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-from userapp.views import main, registration, profile, order, add_to_cart, remove_from_cart, add_to_cart_btn, make_order, suggest_address
+from userapp.views import main, registration, profile, order, add_to_cart, remove_from_cart, add_to_cart_btn, make_order, suggest_address, add_to_favourite, order_history, logout
 
 app_name = 'userapp'
 
@@ -16,5 +16,8 @@ urlpatterns = [
     path('remove-from-cart/<int:cart_id>', remove_from_cart, name='remove_from_cart'),
     path('add-to-cart-btn/<int:cart_id>', add_to_cart_btn, name='add_to_cart_btn'),
     path('order/make-order', make_order, name='make-order'),
-    path('order/suggest-address', suggest_address, name='suggest_address')
+    path('order/suggest-address', suggest_address, name='suggest_address'),
+    path('add-to-favourite/<int:product_id>', add_to_favourite, name='add_to_favourite'),
+    path('order-history/', order_history, name='order_history'),
+    path('logout/', logout, name='logout')
 ]

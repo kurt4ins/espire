@@ -25,7 +25,6 @@ from mainapp.views import goods, good, search, sort
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', goods, name='goods'),
-    path('goods/', goods, name='goods'),
     path('good/', good, name='good'),
     path('search', search, name="search"),
     path('sort', sort, name='sort'),

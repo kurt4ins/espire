@@ -102,11 +102,25 @@ header {
 
 .good-name {
     font-weight:900;
+    margin: 0;
+    padding: 1em 0;
 }
+
+.add-to-fav-btn {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 30px;
+    left: 270px;
+    display: block;
+}
+
+
 
 .good-price {
     color: #9e9e9e;
     font-weight: 500;
+    margin: 0px;
 }
 
 .good:hover {
@@ -125,8 +139,24 @@ header {
     cursor: default;
 }
 
+.popup-btns {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-btns a {
+    font-size: 1.2em;
+    display: flex;
+    padding: 15px 0;
+    text-align: center;
+    align-items: center;
+}
 
 
+.svg-icon{
+    height: 1.5em;
+    padding-right: 0.5em;
+}
 .popup-content{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -155,13 +185,14 @@ header {
     overflow-y: scroll;
     height: 100vh;
     width: 500px;
-    opacity: 0;
+    opacity: 1;
     transition: 0.5s;
     background-color :white;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     top:0;
     right: -500px;
+    /* transform: translateX(300%); */
     /* display: none; */
 }
 
@@ -181,14 +212,15 @@ header {
     overflow-y: scroll;
     height: 100vh;
     width: 500px;
-    opacity: 0;
+    opacity: 1;
     transition: 0.5s;
     background-color :white;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     top:0;
     right: -500px;
-    /* display: none; */
+    /* transform: translateX(100%);
+    display: none; */
 }
 
 .favourite-screen{
