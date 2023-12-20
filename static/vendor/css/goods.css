@@ -151,6 +151,9 @@ header {
     text-align: center;
     align-items: center;
 }
+.popup-btns a:active{
+    border: while 1px solid;
+}
 
 
 .svg-icon{
@@ -343,4 +346,22 @@ header {
   width: fit-content;
   word-break: break-word;
   border: 0;
+}
+
+.container-thanks{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    flex-direction: column;
+}
+
+.back-home{
+    width: 300px;
+    height: 1em;
+    padding: 1em 0 ;
+    background-color: #5E5DF0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

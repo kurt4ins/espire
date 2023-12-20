@@ -62,6 +62,8 @@ def order(request):
                 ordered_product = OrderedProduct.objects.create(quantity=cart.quantity, order=order_info, product=cart.product)
                 ordered_product.save()
                 cart.delete()
+            # Потом сюда пихнуть оплату
+            return HttpResponseRedirect(reverse('userapp:thanks_for_order'))
     else:
         if user.id == None:
             data = {}
@@ -180,3 +182,6 @@ def logout(request):
     # return HttpResponse(1)
     auth.logout(request)
     return HttpResponseRedirect(reverse('goods'))
+
+def thanks_for_order(request):
+    return render(request, 'userapp/thanks_for_order.html')

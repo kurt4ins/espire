@@ -65,7 +65,14 @@ class Order(models.Model):
     is_paid = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'{"✅" if self.completed else "⏰"} Заказ {self.id}. {self.name}'
+    
+
 class OrderedProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{"✅" if self.order.completed else "⏰"} Заказ {self.order.id}. {self.product.name}'
