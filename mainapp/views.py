@@ -20,10 +20,16 @@ def goods(request, context=None):
     print(request.session['device_id'])
     if request.method == 'GET':
         if not context:
+            brands = request.GET.getlist('brand')
+            print(brands)
             favourites = get_favourite(request)
             id_favourites = [x.product_id for x in favourites]
-            
-            context = {'goods':Product.objects.all(),
+            if brands:
+                goods = Product.objects.filter(brand__in = brands)
+            else:
+                goods = Product.objects.all()
+            #goods.order_by('-cost')
+            context = {'goods':goods,
                        'brands':Brand.objects.all(),
                        'form':UserLoginForm, 
                        'carts':get_cart(request),
@@ -31,7 +37,6 @@ def goods(request, context=None):
                        'id_favourites':id_favourites, 
                        'range':range(len(get_cart(request))),
                        'range_goods': range(len(Product.objects.all()))}
-            print(context['favourites'],context['goods'])
         return render(request,'mainapp/goods.html', context)
     else:
         form = UserLoginForm(data=request.POST)

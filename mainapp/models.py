@@ -57,7 +57,7 @@ class Favourite(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=50, verbose_name='Фамилия имя')
+    name = models.CharField(max_length=50, verbose_name='Фамилия имя', error_messages={'requared': 'Поле должно быть заполнено'})
     adress = models.CharField(max_length=400)
     email = models.EmailField()
     phone = models.CharField(max_length=12)

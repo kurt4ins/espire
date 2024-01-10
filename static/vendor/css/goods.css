@@ -189,12 +189,14 @@ header {
     height: 100vh;
     width: 500px;
     opacity: 1;
-    transition: 0.5s;
+    /* transition: right 2s, display 0s; */
+    animation: none;
     background-color :white;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     top:0;
     right: -500px;
+    display: none;
     /* transform: translateX(300%); */
     /* display: none; */
 }
@@ -247,9 +249,68 @@ header {
     cursor: pointer;
 }
 .active{
-    opacity: 1;
+    /* opacity: 1;
     right: 0;
-    z-index: 20;
+    display: block;
+    z-index: 20; */
+    display: block;
+    animation-name: active_menu;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    
+}
+
+.inactive { 
+    display: block;
+    animation-name: inactive_menu;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes active_menu {
+    0%{
+        /* z-index: 20; */
+        display: block;
+        right: -500px;
+        opacity: 0;
+        /* visibility: hidden; */
+    }
+    100%{
+        /* z-index: 20; */
+        display: block;
+        opacity: 1;
+        right: 0;
+        /* visibility: visible; */
+    }
+}
+
+@keyframes inactive_menu {
+    0%{
+        z-index: 20;
+        display: block;
+        opacity: 1;
+        right: 0;
+        /* visibility: visible; */
+    }
+    99%{
+        z-index: 20;
+        display: block;
+        right: -500px;
+        opacity: 0;
+        /* visibility: hidden; */
+    }
+    100% {
+        z-index: 20;
+        display: none;
+        right: -500px;
+        opacity: 0;
+    }
 }
 
 .fistname-input {

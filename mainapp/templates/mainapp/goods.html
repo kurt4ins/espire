@@ -9,7 +9,15 @@
     <div class="mainmenu">
         <div class="sort-brands">
             <form action="">
+                {% for brand in brands %}
+                <div>
+                    <input type="checkbox" name='brand' value="{{brand.id}}" id="brand_{{brand.id}}">
+                    <label for="brand_{{brand.id}}">{{brand.name}}</label>
+                </div>
+                {% endfor %}
+                <input type="submit">
             </form>
+                
         </div>
     </div>
     <div class="goods">

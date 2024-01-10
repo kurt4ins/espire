@@ -48,7 +48,7 @@ class OrderForm(forms.ModelForm):
     def clean_name(self):
         print('VALID')
         name = self.cleaned_data['name']
-        if name != 'Женя':
+        if name.strip() == '':
             raise ValidationError('У вас нет привелегий на то, чтобы тратить деньги')
 
         return name

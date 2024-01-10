@@ -20,6 +20,8 @@ function show_cart() {
     // cart_div.style.display = 'block';
     cart_div.classList.add('active')
     cart_screen.classList.add('active')
+    cart_div.classList.remove('inactive')
+    cart_screen.classList.remove('inactive')
     document.body.style.overflowY = 'hidden';
 
 }
@@ -29,6 +31,8 @@ function close_cart() {
     let cart_screen = document.getElementById('cart-screen');
     cart_div.classList.remove('active')
     cart_screen.classList.remove('active')
+    cart_div.classList.add('inactive')
+    cart_screen.classList.add('inactive')
     document.body.style.overflowY = 'scroll';
 }
 

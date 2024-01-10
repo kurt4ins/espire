@@ -8,12 +8,17 @@
     <div class="registration">
         <form action="{% url 'userapp:registration' %}" method="POST">
             {% csrf_token %}
-            {{form.first_name}}
-            {{form.last_name}}
-            {{form.username}}
-            {{form.email}}
-            {{form.password1}}
-            {{form.password2}}
+            {% for f in form %}
+            <div class="registration-form-str">
+                <label for="{{f.id_for_label}}">{{f.label}}</label>
+                {{f}}
+            </div>
+            <div>
+                {% if errors %}
+                {{f.errors}}
+                {% endif %}
+            </div>
+            {% endfor %}
             <input type="submit">
         </form>
     </div>
