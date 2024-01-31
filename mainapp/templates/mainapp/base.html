@@ -14,15 +14,18 @@
 
 <body>
     <header>
-        <div class="mainpage">
-            <a href="/">
-                <img class="logo" src="{% static 'vendor/img/logo-purple.png' %}">
-            </a>
-        </div>
+        <a class="logo" href="/">
+            <div>
+                <img src="{% static 'vendor/img/logo-purple.png' %}">
+            </div>
+        </a>
         <form action="search" class="search">
             <input type="text" class="search-box" placeholder="Искать здесь..." name="search_text">
             <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
         </form>
+
+        <button class="search-open-btn"><i class="fas fa-search"></i></button>
+
 
         <div onclick="show_favourite()" class="cart">
             <i class="fa-solid fa-heart"></i>
