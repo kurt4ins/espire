@@ -3,6 +3,11 @@ from userapp.models import User
 from mainapp.models import Order
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils.timezone import now
+from userapp.models import EmailVerification
+import uuid
+from datetime import timedelta
+
 
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'username-input'}))
@@ -21,6 +26,16 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
+
+    def save(self, commit=True):
+        user = super(UserRegistrationForm, self).save(commit)
+        time_now = now()
+        experation = time_now + timedelta(days=1)
+        note = EmailVerification.objects.create(key=uuid.uuid4(), user=user, experation=experation)
+        note.send_verif_email()
+        note.save()
+        return user
+
 
 class UserProfileForm(UserChangeForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class':'firstname-input', 'placeholder':'Имя'}))

@@ -1,7 +1,8 @@
+from django.db.models.query import QuerySet
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from userapp.forms import UserRegistrationForm, UserProfileForm
-from userapp.models import User
+from userapp.models import User, EmailVerification
 import uuid
 from mainapp.models import Brand, Product, Cart, Order, OrderedProduct, Favourite
 from userapp.forms import UserLoginForm, OrderForm
@@ -10,6 +11,8 @@ from django.urls import reverse
 from django.contrib import auth
 import requests
 from pprint import pprint
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
 # Create your views here.
 
 
@@ -21,12 +24,6 @@ def registration(request):
         form = UserRegistrationForm(data=request.POST)
         print(form.errors)
         if form.is_valid():
-            # firstname = request.POST['firstname']
-            # lastname = request.POST['lastname']
-            # username = request.POST['username']
-            # email = request.POST['email']
-            # password1 = request.POST['password1']
-            # password2 = request.POST['password2']
             form.save()
             return HttpResponseRedirect('/')
     else:
@@ -185,3 +182,40 @@ def logout(request):
 
 def thanks_for_order(request):
     return render(request, 'userapp/thanks_for_order.html')
+
+def email_verif(request, email, key):
+    return HttpResponse('Успех')
+
+# class EmailVerificationView(TemplateView):
+#     template_name = 'userapp/success_verif.html'
+
+#     def get_context_data(self, **kwargs):
+#         context =  super().get_context_data(**kwargs)
+#         context['name'] = 'Женя'
+#         return context
+    
+#     def get(self, request):
+#         users = User.objects.all()
+#         print(users)
+#         return super().get(request)
+
+# class EmailVerificationView(ListView):
+#     model = User
+#     template_name = 'userapp/success_verif.html'
+
+#     def get_queryset(self):
+#         queryset = super().get_queryset()
+#         return queryset
+
+class EmailVerificationView(TemplateView):
+    template_name = 'userapp/success_verif.html'
+    
+    def get(self, request, *args, **kwargs):
+        key = kwargs['key']
+        email = kwargs['email']
+        user = User.objects.get(email=email)
+        email_verif = EmailVerification.objects.filter(user=user, key=key)
+        if email_verif.exists():
+            user.is_verified_email = True
+            user.save()
+        return super(EmailVerificationView, self).get(request, *args, **kwargs)

@@ -1,0 +1,14 @@
+{% extends 'mainapp/base.html' %}
+
+{% block css %}{% endblock css %}
+
+{% block content %}
+    <div class = "container-thanks">
+        <h1>Вы успешно подтвердили почту {{name}}</h1>
+        <a href="/">
+            <div class="back-home">
+                Вернуться на главную
+            </div>
+        </a>
+    </div>
+{% endblock content %}
