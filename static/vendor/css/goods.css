@@ -7,6 +7,7 @@
 body {
     background-color: #ffffff;
     overflow-x: hidden;
+    width: 100vw;
 }
 
 a {
@@ -192,21 +193,22 @@ header {
 }
 
 .cart-menu {
-    position: absolute;
+    position: fixed;
     overflow-y: scroll;
     height: 100vh;
-    width: 500px;
+    width: 40vw;
+    max-width: 500px;
     opacity: 1;
-    /* transition: right 2s, display 0s; */
     animation: none;
     background-color :white;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     top:0;
-    right: -500px;
+    right: 0;
+    transform: translateX(100%);
     display: none;
-    /* transform: translateX(300%); */
-    /* display: none; */
+    z-index: 2;
+
 }
 
 .cart-screen{
@@ -218,7 +220,7 @@ header {
     opacity: 0;
     width: 100%;
     height: 100%;
-    transition: 0.5s;
+    transition: opacity 0.5s;
 }
 .favourite-menu {
     position: absolute;
@@ -257,10 +259,6 @@ header {
     cursor: pointer;
 }
 .active{
-    /* opacity: 1;
-    right: 0;
-    display: block;
-    z-index: 20; */
     display: block;
     animation-name: active_menu;
     animation-duration: 0.5s;
@@ -269,6 +267,12 @@ header {
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
     
+}
+
+.active_1 {
+    opacity: 1;
+    z-index: 1;
+    transition: opacity 0.5s;
 }
 
 .inactive { 
@@ -285,7 +289,7 @@ header {
     0%{
         /* z-index: 20; */
         display: block;
-        right: -500px;
+        transform: translateX(100%);
         opacity: 0;
         /* visibility: hidden; */
     }
@@ -293,7 +297,7 @@ header {
         /* z-index: 20; */
         display: block;
         opacity: 1;
-        right: 0;
+        transform: translateX(0);
         /* visibility: visible; */
     }
 }
@@ -303,20 +307,20 @@ header {
         z-index: 20;
         display: block;
         opacity: 1;
-        right: 0;
+        transform: translateX(0);
         /* visibility: visible; */
     }
     99%{
         z-index: 20;
         display: block;
-        right: -500px;
+        transform: translateX(100%);
         opacity: 0;
         /* visibility: hidden; */
     }
     100% {
         z-index: 20;
         display: none;
-        right: -500px;
+        transform: translateX(100%);
         opacity: 0;
     }
 }

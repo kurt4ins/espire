@@ -10,7 +10,7 @@
             {% csrf_token %}
             {% for f in form %}
             <div class="registration-form-str">
-                <label for="{{f.id_for_label}}">{{f.label}}</label>
+                <label for="{{f.id_for_label}}">{{f.label}}:</label>
                 {{f}}
             </div>
             <div>

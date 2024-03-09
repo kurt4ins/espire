@@ -17,7 +17,7 @@ class UserLoginForm(AuthenticationForm):
         fields = ('username', 'password')
 
 class UserRegistrationForm(UserCreationForm):
-    first_name = forms.CharField(widget=forms.TextInput(attrs={'class':'firstname-input'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class':'firstname-input'}), label='Имя')
     last_name = forms.CharField(widget=forms.TextInput(attrs={'class':'lastname-input'}))
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'username-input'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'email-input'}))

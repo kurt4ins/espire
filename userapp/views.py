@@ -13,6 +13,7 @@ import requests
 from pprint import pprint
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
+from common.views import TitleMixin
 # Create your views here.
 
 
@@ -207,8 +208,9 @@ def email_verif(request, email, key):
 #         queryset = super().get_queryset()
 #         return queryset
 
-class EmailVerificationView(TemplateView):
+class EmailVerificationView(TitleMixin, TemplateView):
     template_name = 'userapp/success_verif.html'
+    title = 'Подтверждение email'
     
     def get(self, request, *args, **kwargs):
         key = kwargs['key']
