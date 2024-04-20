@@ -14,8 +14,12 @@ from pprint import pprint
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from common.views import TitleMixin
+from yookassa import Configuration, Payment
+import os
+from dotenv import load_dotenv
+import json
 # Create your views here.
-
+load_dotenv()
 
 def main(request):
     return HttpResponse('1')
@@ -43,6 +47,25 @@ def profile(request):
     context = {'form':form}
     return render(request, 'userapp/profile.html', context)
 
+def get_payment(request):
+    Configuration.account_id = os.getenv('SHOP_ID')
+    Configuration.secret_key = os.getenv('YOOKASSA_SECRET')
+    payment_id = str(uuid.uuid4())
+    payment = Payment.create({
+        "amount": {
+            "value": "100.00",
+            "currency": "RUB"
+        },
+        "confirmation": {
+            "type": "redirect",
+            "return_url": 'http://localhost:8000'+reverse('userapp:thanks_for_order', kwargs={'payment_id':payment_id})
+        },
+        "capture": True,
+        "description": "Заказ №1"
+    }, payment_id)
+
+    return payment
+
 def order(request):
     user = request.user
     if request.method == 'POST':
@@ -54,14 +77,20 @@ def order(request):
             order_info = Order.objects.last()
             if user.id:
                 cart_info = Cart.objects.filter(user = user, completed=0)
+                order_info.is_user = 1
+                order_info.user = user
+                order_info.save()
             else:
                 cart_info = Cart.objects.filter(device_id=request.session['device_id'], completed=0)
             for cart in cart_info:
                 ordered_product = OrderedProduct.objects.create(quantity=cart.quantity, order=order_info, product=cart.product)
                 ordered_product.save()
                 cart.delete()
-            # Потом сюда пихнуть оплату
-            return HttpResponseRedirect(reverse('userapp:thanks_for_order'))
+            #print(payment(request).json())
+            payment = json.loads(get_payment(request).json())
+            order_info.payment_id = payment['id']
+            order_info.save()
+            return HttpResponseRedirect(payment['confirmation']['confirmation_url'])
     else:
         if user.id == None:
             data = {}
@@ -181,32 +210,15 @@ def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('goods'))
 
-def thanks_for_order(request):
+def thanks_for_order(request, payment_id):
+    order = Order.objects.get(payment_id=payment_id)
+    order.is_paid = 1
+    order.save()
+
     return render(request, 'userapp/thanks_for_order.html')
 
 def email_verif(request, email, key):
     return HttpResponse('Успех')
-
-# class EmailVerificationView(TemplateView):
-#     template_name = 'userapp/success_verif.html'
-
-#     def get_context_data(self, **kwargs):
-#         context =  super().get_context_data(**kwargs)
-#         context['name'] = 'Женя'
-#         return context
-    
-#     def get(self, request):
-#         users = User.objects.all()
-#         print(users)
-#         return super().get(request)
-
-# class EmailVerificationView(ListView):
-#     model = User
-#     template_name = 'userapp/success_verif.html'
-
-#     def get_queryset(self):
-#         queryset = super().get_queryset()
-#         return queryset
 
 class EmailVerificationView(TitleMixin, TemplateView):
     template_name = 'userapp/success_verif.html'
@@ -221,3 +233,5 @@ class EmailVerificationView(TitleMixin, TemplateView):
             user.is_verified_email = True
             user.save()
         return super(EmailVerificationView, self).get(request, *args, **kwargs)
+    
+    

@@ -20,7 +20,7 @@ urlpatterns = [
     path('add-to-favourite/<int:product_id>', add_to_favourite, name='add_to_favourite'),
     path('order-history/', order_history, name='order_history'),
     path('logout/', logout, name='logout'),
-    path('thanks-for-order/', thanks_for_order, name='thanks_for_order'),
+    path('thanks-for-order/<uuid:payment_id>', thanks_for_order, name='thanks_for_order'),
     path('email-verif/<str:email>/<uuid:key>/', EmailVerificationView.as_view(), name='email_verif'),
     path('test_cbv', EmailVerificationView.as_view())
 ]
