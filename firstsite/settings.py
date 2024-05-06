@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.github",
 ]
 
 MIDDLEWARE = [
@@ -53,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "firstsite.urls"
@@ -105,7 +110,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -144,3 +152,18 @@ EMAIL_HOST_PASSWORD = config["EMAIL_HOST_PASSWORD"]
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
+
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {
+        "SCOPE": [
+            "user",
+            "user:email"
+            "repo",
+            "read:org",
+        ],
+    }
+}
+
+SOCIALACCOUNT_QUERY_EMAIL = True
+
+LOGIN_REDIRECT_URL = 'goods'

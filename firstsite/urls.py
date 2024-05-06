@@ -29,6 +29,7 @@ urlpatterns = [
     path("sort", sort, name="sort"),
     path("user/", include("userapp.urls", "userapp")),
     path("api/product", ProductViews.as_view()),
+    path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:
