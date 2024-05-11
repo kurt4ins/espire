@@ -89,3 +89,4 @@ class OrderedProduct(models.Model):
 
     def __str__(self):
         return f'{"✅" if self.order.completed else "⏰"} Заказ {self.order.id}. {self.product.name}'
+    
