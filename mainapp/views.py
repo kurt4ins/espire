@@ -6,6 +6,7 @@ from userapp.views import get_cart, get_favourite
 from rest_framework import generics
 from mainapp.serializers import ProductSerializer, BrandSerializer
 import uuid
+from django.core.cache import cache
 # Create your views here.
 
 # def main(request):
@@ -19,28 +20,43 @@ def goods(request, context=None):
     except KeyError:
         device_id = str(uuid.uuid4())
         request.session["device_id"] = device_id
-    print(request.session["device_id"])
+    # print(request.session["device_id"])
     if request.method == "GET":
         if not context:
+            get_cart_list = get_cart(request)
+
+            context = {
+                "form": UserLoginForm,
+                "carts": get_cart_list,
+                "range": range(len(get_cart_list)),
+            }
             brands = request.GET.getlist("brand")
-            print(brands)
+            search_text = request.GET.get("search_text")
+
             favourites = get_favourite(request)
             id_favourites = [x.product_id for x in favourites]
+
+            context["favourites"] =  favourites
+            context["id_favourites"] = id_favourites
+            
             if brands:
                 goods = Product.objects.filter(brand__in=brands)
+                context["goods"] = goods
+            elif search_text:
+                filtered = Product.objects.filter(name__icontains=search_text)
+                context["goods"] = filtered
             else:
-                goods = Product.objects.all()
-            # goods.order_by('-cost')
-            context = {
-                "goods": goods,
-                "brands": Brand.objects.all(),
-                "form": UserLoginForm,
-                "carts": get_cart(request),
-                "favourites": favourites,
-                "id_favourites": id_favourites,
-                "range": range(len(get_cart(request))),
-                "range_goods": range(len(Product.objects.all())),
-            }
+                goods_list = Product.objects.all()
+                context["goods"] = cache.get_or_set("goods", goods_list, 30)
+                context["range_goods"] = range(len(goods_list))
+
+    
+            brands_cache = cache.get("brands")
+            if not brands_cache:
+                brands_cache = Brand.objects.all()
+                cache.set("brands", brands_cache, 30)
+            context["brands"] = brands_cache
+
         return render(request, "mainapp/goods.html", context)
     else:
         form = UserLoginForm(data=request.POST)
@@ -70,7 +86,7 @@ def compare_carts(user, device_id):
             else:
                 last_product = sorted_carts[i].product
             i += 1
-            print(sorted_carts)
+            # print(sorted_carts)
 
 
 def good(request):
@@ -94,10 +110,7 @@ def good(request):
     )
 
 
-def search(request):
-    search_text = request.GET.get("search_text")
-    filtered = Product.objects.filter(name__icontains=search_text)
-    return goods(request, {"goods": filtered, "brands": Brand.objects.all()})
+
 
 
 def sort(request):
@@ -114,7 +127,7 @@ class ProductViews(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+
 class BrandViews(generics.ListAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
-    

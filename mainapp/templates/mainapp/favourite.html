@@ -1,11 +1,15 @@
+{% load static %}
 <div class="favourite-screen" id="favourite-screen" onclick="close_favourite()">
 </div>
 <div class="favourite-menu" id="favourite-menu">
-    <div class="cart-header"> 
+    <div class="cart-header">
         <p class="your-order">Избранные товары</p>
-        <div class="cart-line"></div>
+        <div class="close-menu-btn" onclick="close_favourite()">
+            <img src="{% static 'vendor/svg/close-fill.svg'%}">
+            </button>
+        </div>
     </div>
-    
+    <div class="cart-line"></div>
     {% for favourite in favourites %}
     <div class="cart-position" id="cart-position-{{cart.id}}">
         <img class="cart-img" src={{favourite.product.img.url}}>

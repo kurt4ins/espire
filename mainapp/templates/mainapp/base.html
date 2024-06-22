@@ -19,12 +19,12 @@
                 <img src="{% static 'vendor/img/logo-purple.png' %}">
             </div>
         </a>
-        <form action="search" class="search">
+        <form action="" class="search" id="search">
             <input type="text" class="search-box" placeholder="Искать здесь..." name="search_text">
             <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
         </form>
 
-        <button class="search-open-btn"><i class="fas fa-search"></i></button>
+        <button class="search-open-btn" onclick="show_search()"><i class="fas fa-search"></i></button>
 
 
         <div onclick="show_favourite()" class="cart">
@@ -67,12 +67,15 @@
             </dialog>
         </div>
     </header>
+    <div onclick="close_search()">
     {% block content %} {% endblock %}
+    </div>
     {% include 'mainapp/cart.html' %}
-    {% comment %} {% include 'mainapp/favourite.html' %} {% endcomment %}
+    {% include 'mainapp/favourite.html' %}
     <script src="{% static 'vendor/js/script.js' %}"></script>
 </body>
 <script type="text/javascript">
+    get_total_cart_sum()
     $('#cart-menu').on('click', '.remove-product', function (e) {
         e.preventDefault();
         $.ajax({
@@ -81,10 +84,15 @@
             success:function (data) {
                 if (data['new_quantity'] > 0) {
                     $(`#p-${e.currentTarget.id}`).html(data['new_quantity'])
+
+                    get_total_cart_sum()
                 }
                 else {
                     $(`#cart-position-${e.currentTarget.id}`).remove()
+                    $('.total-price').remove()
+                    $('.order-btn').remove()
                 }
+                
             }
         })
     })
@@ -96,8 +104,19 @@
             url:'/user/add-to-cart-btn/'+ e.currentTarget.id,
             success:function (data) {
                 $(`#p-${e.currentTarget.id}`).html(data['new_quantity'])
+                get_total_cart_sum()
             }
         })
     })
+
+    function get_total_cart_sum(){
+        $.ajax({
+            type: 'GET',
+            url: "{%url 'userapp:get_total_cart_sum'%}",
+            success: function (data){
+                $('#total_sum').html("Итого: " + data['total_sum'])
+            }
+        })
+    }
 </script>
 </html>

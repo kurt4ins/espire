@@ -3,10 +3,7 @@ from userapp.models import User
 from mainapp.models import Order
 from django import forms
 from django.core.exceptions import ValidationError
-from django.utils.timezone import now
-from userapp.models import EmailVerification
-import uuid
-from datetime import timedelta
+from userapp.tasks import celery_send_email_verif
 
 
 class UserLoginForm(AuthenticationForm):
@@ -29,11 +26,7 @@ class UserRegistrationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super(UserRegistrationForm, self).save(commit)
-        time_now = now()
-        experation = time_now + timedelta(days=1)
-        note = EmailVerification.objects.create(key=uuid.uuid4(), user=user, experation=experation)
-        note.send_verif_email()
-        note.save()
+        celery_send_email_verif.delay(user.id)
         return user
 
 

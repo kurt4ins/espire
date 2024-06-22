@@ -19,18 +19,20 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from mainapp.views import ProductViews, good, goods, search, sort
+from mainapp.views import ProductViews, good, goods, sort
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", goods, name="goods"),
     path("good/", good, name="good"),
-    path("search", search, name="search"),
     path("sort", sort, name="sort"),
     path("user/", include("userapp.urls", "userapp")),
     path("api/product", ProductViews.as_view()),
     path('accounts/', include('allauth.urls')),
+
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]

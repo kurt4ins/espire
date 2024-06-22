@@ -1,9 +1,15 @@
+{% load static %}
 <div class="cart-screen" id="cart-screen" onclick="close_cart()"></div>
+
 <div class="cart-menu" id="cart-menu">
-    <div class="cart-header"> 
+    <div class="cart-header">
         <p class="your-order">Ваш заказ</p>
-        <div class="cart-line"></div>
+        <div class="close-menu-btn" onclick="close_cart()">
+            <img src="{% static 'vendor/svg/close-fill.svg'%}">
+            </button>
+        </div>
     </div>
+    <div class="cart-line"></div>
     {% if carts|length == 0 %}
     <div class="empty-cart">
         <p>Корзина пуста</p>
@@ -29,9 +35,9 @@
     {%endfor%}
     <div class="total-price">
         <div class="cart-line"></div>
-        <p class="">Итого: {{carts.0.total_sum}}</p>
+        <p id = 'total_sum'>Итого: {{carts.0.total_sum}}</p>
     </div>
-    <a href={%url 'userapp:order'%}>
+    <a href={%url 'userapp:order' %}>
         <button class="order-btn" role="button">Оформить заказ</button>
     </a>
     {% endif %}

@@ -1,6 +1,7 @@
 from django.db import models
 from userapp.models import User
 import uuid
+from django.db.models import Q
 
 # Create your models here.
 
@@ -47,8 +48,11 @@ class Cart(models.Model):
     def sum(self):
         return self.quantity * self.product.cost
 
-    def total_sum(self):
-        carts = Cart.objects.filter(user=self.user, completed=0)
+    def total_sum(self, device_id):
+        if not self.user:
+            carts = Cart.objects.filter(device_id=device_id, completed = False)
+        else:
+            carts = Cart.objects.filter(Q(user=self.user) | Q(device_id=device_id), completed = False)
         return sum([cart.sum() for cart in carts])
 
     def total_quantity(self):

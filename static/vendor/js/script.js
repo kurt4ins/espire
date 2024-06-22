@@ -3,7 +3,7 @@ function open_popup() {
     popup.show();
 }
 
-function close_popup({target}) {
+function close_popup({ target }) {
     let popup = document.getElementById('popup');
     let popup_but = document.getElementById('popup_but');
 
@@ -39,7 +39,9 @@ function show_favourite() {
     let favourite_div = document.getElementById('favourite-menu');
     let favourite_screen = document.getElementById('favourite-screen');
     favourite_div.classList.add('active')
-    favourite_screen.classList.add('active')
+    favourite_screen.classList.add('active_1')
+    favourite_div.classList.remove('inactive')
+    //cart_screen.classList.remove('inactive')
     document.body.style.overflowY = 'hidden';
 
 }
@@ -48,6 +50,23 @@ function close_favourite() {
     let favourite_div = document.getElementById('favourite-menu');
     let favourite_screen = document.getElementById('favourite-screen');
     favourite_div.classList.remove('active')
-    favourite_screen.classList.remove('active')
+    favourite_screen.classList.remove('active_1')
+    favourite_div.classList.add('inactive')
+    //cart_screen.classList.add('inactive')
     document.body.style.overflowY = 'scroll';
+}
+
+function show_search() {
+    let form_search = document.getElementById('search')
+    if (form_search.classList.contains('active-search')) {
+        form_search.classList.remove('active-search')
+    }
+    else {
+        form_search.classList.add('active-search')
+    }
+}
+
+function close_search() {
+    let form_search = document.getElementById('search')
+    form_search.classList.remove('active-search')
 }

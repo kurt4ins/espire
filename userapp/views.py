@@ -125,6 +125,16 @@ def add_to_cart(request, product_id):
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+def get_total_cart_sum(request):
+    try:
+        device_id = request.session['device_id']
+    except KeyError:
+        device_id = str(uuid.uuid4())
+        request.session['device_id'] = device_id
+    cart = get_cart(request)[0]
+
+    return JsonResponse({'total_sum':cart.total_sum(device_id)})
+
 def add_to_favourite(request, product_id):
     try:
         device_id = request.session['device_id']

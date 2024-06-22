@@ -1,5 +1,5 @@
 {% extends 'mainapp/base.html' %}
-{%load static%}
+{%load static cache%}
 
 {% block title %}
 Espire Shop
@@ -22,23 +22,25 @@ Espire Shop
         </div>
     </div>
     <div class="goods">
-        {% for i in goods %}
-        <div class="good">
-            <a href="{% url 'userapp:add_to_favourite' i.id%}" class="add-to-fav-btn">
-                {% if i.id in id_favourites%}
-                <img class="fav-btn" src={% static 'vendor/svg/heart-fill.svg' %}></img>
-                {% else %}
-                <img class="fav-btn" src={% static 'vendor/svg/heart.svg' %}></img>
-                {% endif %}
-            </a>
-            </a>
-            <a href="/good?id={{i.id}}">
-                <img class="preview-img" src="{{i.img.url}}" alt="">
-                <p class="good-name">{{i.name}}</p>
-                <p class="good-price">{{i.beautiful_cost}}</p>
-            </a>
-        </div>
-        {%endfor%}
+        
+            {% for i in goods %}
+            <div class="good">
+                <a href="{% url 'userapp:add_to_favourite' i.id%}" class="add-to-fav-btn">
+                    {% if i.id in id_favourites%}
+                    <img class="fav-btn" src={% static 'vendor/svg/heart-fill.svg' %}></img>
+                    {% else %}
+                    <img class="fav-btn" src={% static 'vendor/svg/heart.svg' %}></img>
+                    {% endif %}
+                </a>
+                </a>
+                <a href="/good?id={{i.id}}">
+                    <img class="preview-img" src="{{i.img.url}}" alt="">
+                    <p class="good-name">{{i.name}}</p>
+                    <p class="good-price">{{i.beautiful_cost}}</p>
+                </a>
+            </div>
+            {%endfor%}
+        
     </div>
 </div>
 {% endblock %}
