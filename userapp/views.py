@@ -58,7 +58,7 @@ def get_payment(request):
         },
         "confirmation": {
             "type": "redirect",
-            "return_url": 'http://localhost:8000'+reverse('userapp:thanks_for_order', kwargs={'payment_id':payment_id})
+            "return_url": os.getenv('SITE_NAME')+reverse('userapp:thanks_for_order', kwargs={'payment_id':payment_id})
         },
         "capture": True,
         "description": "Заказ №1"
