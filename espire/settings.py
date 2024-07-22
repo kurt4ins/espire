@@ -28,12 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.getenv('DEBUG') == 'True':
+if os.getenv("DEBUG") == "True":
     DEBUG = True
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = [os.getenv('DOMAIN_NAME')]
+ALLOWED_HOSTS = [os.getenv("DOMAIN_NAME")]
 
 DOMAIN_NAME = "http://localhost:8000"
 
@@ -69,7 +69,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-ROOT_URLCONF = "firstsite.urls"
+ROOT_URLCONF = "espire.urls"
 
 TEMPLATES = [
     {
@@ -87,7 +87,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "firstsite.wsgi.application"
+WSGI_APPLICATION = "espire.wsgi.application"
 
 
 # Database
@@ -143,9 +143,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-#STATICFILES_DIRS = (BASE_DIR / "static",)
+STATICFILES_DIRS = (BASE_DIR / "static",)
 # STATICFILES_ROOT = BASE_DIR / "static/"
-STATIC_ROOT = BASE_DIR / "static/"
+# STATIC_ROOT = BASE_DIR / "static/"
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media/"
@@ -190,10 +190,7 @@ INTERNAL_IPS = [
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1", 
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
+        "LOCATION": "redis://127.0.0.1:6379/1",
     }
 }
 
