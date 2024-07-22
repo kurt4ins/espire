@@ -146,7 +146,7 @@ STATIC_URL = "static/"
 
 
 if not DEBUG:
-    STATIC_ROOT = BASE_DIR / "static"
+    STATIC_ROOT = BASE_DIR / "static/"
 else:
     STATICFILES_DIRS = (BASE_DIR / "static",)
 
