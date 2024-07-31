@@ -33,7 +33,7 @@ if os.getenv("DEBUG") == "True":
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = [os.getenv("DOMAIN_NAME")]
+ALLOWED_HOSTS = [os.getenv("DOMAIN_NAME"), os.getenv("DOMAIN_NAME_WWW")]
 
 DOMAIN_NAME = "http://localhost:8000"
 
